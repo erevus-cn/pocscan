@@ -1,0 +1,30 @@
+    <aside>
+      <div class="visible-xlg">
+        <a class="navbar-brand" href="#" title="Pocscan">
+          <img src="/static/images/logo3x.png"
+          alt="Pocscan">
+        </a>
+        <ul class="navbar-aside">
+          <li class="dropdown open">
+            <a href="javascript:void(0);">
+              漏洞检测
+              <i class="icons-xs icons-arrow-right">
+              </i>
+            </a>
+            <ul class="dropdown-list">
+              <li>
+                <a href="{% url 'home' %}"
+                data-nav-id="corp.taskconfig.add">
+                  添加扫描
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'results' %}" data-nav-id="corp.tasklist">
+                  任务列表
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </aside>

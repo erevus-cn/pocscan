@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html class=" ">
+<head> </head>
+<body class="">
+{% include 'header.html' %}  {% include 'left.html' %}
+<main>
+    {% include 'banner.html' %}
+    <div class="container-fluid">
+        <h1 class="bread-crumb"> <strong>扫描结果</strong>
+            <div class="absolute-right">
+                <form action="" method="post" class="input-group search-group" data-format="HTML" data-action="notpjax">
+                    <input type="text" class="form-control" placeholder="请输入..." name="keywords" />
+                    <span class="input-group-btn"> <button class="btn btn-default" type="submit"><i class="icons-xs icons-xs-search"></i></button> </span>
+                </form>
+            </div> </h1>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>网站地址</th>
+                <th>扫描结果</th>
+                <th>发现时间</th>
+            </tr>
+            </thead>
+            <tbody id="resulist">
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="6">
+                    <ul id="pagination-ddol" class="pagination-sm pull-right"></ul>
+                    <p class="tfoot-info">共 <span class="text-success">148</span> 条记录</p>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jquery.twbsPagination.js" type="text/javascript"></script>
+<script src="/static/js/jquery.twbsPagination.min.js" type="text/javascript"></script>
+<script>
+   function listenOnclick(){
+       $('div.pre-wrapper:not(.one-line) > a.btn-collapse').on('click', function() {
+              if ( !$(this).hasClass('open') ) {
+                  $(this).addClass('open').text('－Close').parent('div.pre-wrapper').height('auto');
+              } else {
+                  $(this).removeClass('open').text('＋Detail').parent('div.pre-wrapper').height(34);
+              }
+              return false;
+          });
+   };
+    function default_date() {
+        $.get('/results/?page=1',{}, function(data) {
+            $('#resulist').html(data);
+            listenOnclick();
+        });
+    };
+    default_date();
+    $('#pagination-ddol').twbsPagination({
+        totalPages: 35,
+        visiblePages: 7,
+        onPageClick: function (event, page) {
+            var url='/results/?page=' + page;
+            $.get(url,{}, function(data) {
+                $('#resulist').html(data);
+                listenOnclick();
+            }).fail(function() {
+                $('#resulist').html('查询失败');
+            })
+        }
+    });
+</script>
+<script>
+    function add_task(){
+        var domains = document.getElementById('domain').value;
+        var scan_domain = (domains.replace(/\n/g,","));
+        var task_name = document.getElementById('poc_name').value;
+        var poc_name = document.getElementById('poc_name').value;
+        $.post('/scan/',{
+                    'domains': scan_domain,
+                    'poc_name': poc_name,
+                    'task_name': task_name,
+                    'mode': 1,
+                    'csrfmiddlewaretoken':'{{ csrf_token }}' },
+                function(status){
+                    if(status.status==200){
+                        alert('添加成功');
+                    }
+                    if(status.status==1){
+                        alert('目标都已有扫描结果或正在扫描');
+                    }
+                });
+    };
+</script>
+</body>
+</html>

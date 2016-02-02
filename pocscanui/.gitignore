@@ -1,0 +1,10 @@
+*.pyc
+*env/
+
+pocscan/plugins
+
+.idea/
+
+*.swp
+
+pocscan/

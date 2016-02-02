@@ -1,0 +1,7 @@
+*.pyc
+.DS_Store
+.idea/
+*.swp
+pocscan/pocs/
+
+
