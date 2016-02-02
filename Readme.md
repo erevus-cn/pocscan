@@ -2,6 +2,10 @@
 
  Pocscan是一款开源 Poc 调用框架,可轻松调用Pocsuite,Tangscan,Beebeeto <font color=red>按照官方规范编写</font>的 Poc对目标域名进行扫描，通过 Docker 一键部署，麻麻再也不怕搭建麻烦了 。
  
+ 哦,对了，Pocscan提供了chrome浏览器插件,插件会自动抓取网页上的host丢去扫描。ε=ε=(ノ≧∇≦)ノ
+ 
+ 架构是参考 https://github.com/netxfly/passive_scan
+ 
  Pocscan 只是扫描框架，不提供Poc!!!  
  Pocscan 只是扫描框架，不提供Poc!!!  
  Pocscan 只是扫描框架，不提供Poc!!!  
@@ -64,7 +68,7 @@
 
 ### FAQ
 
-Q: 搭建为啥扫不出漏洞啊？
+Q: 搭建为啥扫不出漏洞啊？(ﾟДﾟ≡ﾟдﾟ)!?
 
 A: Pocscan 只是提供一个框架，不提供 Poc , 扫不出洞说明你的 Poc 不够多不够牛逼。
 
