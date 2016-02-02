@@ -27,7 +27,7 @@ SECRET_KEY = 'q+llb7scf5@gcv4)e!(0gwju7hmq=b0n)2$q_+&cg$*5s4d5-!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # 是否是扫描节点(扫描节点没有Web界面）
 IS_NODE = False
