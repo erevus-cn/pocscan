@@ -3,10 +3,13 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from pocscan.library.utils import get_poc_files
 from web.lib.utils import check_status
 from web.lib.task_control import Task_control
 from web.models import Result
 
+
+import json
 
 @login_required(login_url="/login/")
 def index(request):
@@ -45,7 +48,6 @@ def scan(request):
 @csrf_exempt
 def save_result(request):
         try:
-            import json
             target = request.POST.get('target', None)
             poc_file = request.POST.get('poc_file', None)
             result = request.POST.get('result', None)
@@ -65,6 +67,8 @@ def results(request):
     except Exception, e:
         return render(request, 'results.html')
 
-def help(request):
-    return render(request, 'help.html')
+def poc_list(request):
+    poc_list = get_poc_files('')
+    print poc_list
+    return render(request, 'poc_list.html', {"poc_list":poc_list})
 

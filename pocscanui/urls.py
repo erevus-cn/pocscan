@@ -24,6 +24,6 @@ urlpatterns = [
     url(r'^scan/', 'web.views.scan', name='scan'),
     url(r'^results/', 'web.views.results', name='results'),
     url(r'^save_result', 'web.views.save_result', name='save_result'),
-    url(r'^help/', 'web.views.help', name='help'),
+    url(r'^poc_list/', 'web.views.poc_list', name='poc_list'),
     url(r'^admin/', include(admin.site.urls)),
 ]
