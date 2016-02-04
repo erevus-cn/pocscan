@@ -151,13 +151,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 #邮件配置
-EMAIL_HOST = 'smtp.exmail.qq.com'               #SMTP地址
+EMAIL_HOST = ''               #SMTP地址
 EMAIL_PORT = 25                                 #SMTP端口
-EMAIL_HOST_USER = 'no-reply@bilinavi.com'       #我自己的邮箱
-EMAIL_HOST_PASSWORD = 'Boxoi9kW%EGo'                  #我的邮箱密码
+EMAIL_HOST_USER = ''       #我自己的邮箱
+EMAIL_HOST_PASSWORD = ''                  #我的邮箱密码
 EMAIL_USE_TLS = True                             #与SMTP服务器通信时，是否启动TLS链接(安全链接)。默认是false
 #管理员站点
-RECEIVE_EMAIL = 'wuwenhao@bilibili.com'
+RECEIVE_EMAIL = ''
 
 
 
