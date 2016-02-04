@@ -27,7 +27,7 @@
             <tr>
                 <td colspan="6">
                     <ul id="pagination-ddol" class="pagination-sm pull-right"></ul>
-                    <p class="tfoot-info">共 <span class="text-success">148</span> 条记录</p>
+                    <p class="tfoot-info">共 <span class="text-success">{{ num }}</span> 条记录</p>
                 </td>
             </tr>
             </tfoot>
@@ -56,7 +56,7 @@
     };
     default_date();
     $('#pagination-ddol').twbsPagination({
-        totalPages: 35,
+        totalPages: {{ num }}/10 + 1,
         visiblePages: 7,
         onPageClick: function (event, page) {
             var url='/results/?page=' + page;
