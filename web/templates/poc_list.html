@@ -1,0 +1,51 @@
+{% load sploit %}
+<!DOCTYPE html>
+<html class=" ">
+<head> </head>
+<body class="">
+{% include 'header.html' %}  {% include 'left.html' %}
+<main>
+    {% include 'banner.html' %}
+    <div class="container-fluid">
+        <h1 class="bread-crumb"> <strong>扫描结果</strong>
+            <div class="absolute-right">
+                <form action="" method="post" class="input-group search-group" data-format="HTML" data-action="notpjax">
+                    <input type="text" class="form-control" placeholder="请输入..." name="keywords" />
+                    <span class="input-group-btn"> <button class="btn btn-default" type="submit"><i class="icons-xs icons-xs-search"></i></button> </span>
+                </form>
+            </div> </h1>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>插件类别</th>
+                <th>插件名称</th>
+                <th>插件位置</th>
+            </tr>
+            </thead>
+            <tbody id="resulist">
+            {% for poc_type, poc_path in poc_list.items %}
+                {% for each_poc in poc_path %}
+                <tr>
+                    <td>{{ poc_type }}</td>
+                    <td width="50%">
+                        <div class='pre-wrapper' style="padding-right: 140px;height: 20px;">
+                            <pre>{{ each_poc |sp }}</pre>
+                        </div>
+                    </td>
+                    <td>{{ each_poc }}</td>
+                </tr>
+                    {% endfor %}
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="6">
+                    <ul id="pagination-ddol" class="pagination-sm pull-right"></ul>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+</body>
+</html>
