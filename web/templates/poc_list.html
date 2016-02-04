@@ -1,0 +1,45 @@
+{% load sploit %}
+<!DOCTYPE html>
+<html class=" ">
+<head> </head>
+<body class="">
+{% include 'header.html' %}  {% include 'left.html' %}
+<main>
+    {% include 'banner.html' %}
+    <div class="container-fluid">
+        <h1 class="bread-crumb"> <strong>插件列表</strong></h1>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>插件类别</th>
+                <th>插件名称</th>
+                <th>插件位置</th>
+            </tr>
+            </thead>
+            <tbody id="resulist">
+            {% for poc_type, poc_path in poc_list.items %}
+                {% for each_poc in poc_path %}
+                <tr>
+                    <td width="20%">{{ poc_type }}</td>
+                    <td width="30%">
+                        <div class='pre-wrapper' style="height: 20px;">
+                            <pre>{{ each_poc |sp }}</pre>
+                        </div>
+                    </td>
+                    <td width="50%">{{ each_poc }}</td>
+                </tr>
+                    {% endfor %}
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="6">
+                    <ul id="pagination-ddol" class="pagination-sm pull-right"></ul>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+</body>
+</html>
