@@ -65,7 +65,8 @@ def results(request):
         except Exception,e:
             pass
     except Exception, e:
-        return render(request, 'results.html')
+        numOfResult = len(Result.objects.all())
+        return render(request, 'results.html', {"num":numOfResult})
 
 def poc_list(request):
     poc_list = get_poc_files('')
