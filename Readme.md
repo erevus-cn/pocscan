@@ -22,7 +22,7 @@
 
     	$ curl -sSL https://get.daocloud.io/docker | sh 
     	$ sudo systemctl start docker
-    	$ sudo docker pull daocloud.io/aber/pocscan:1.0 
+    	$ sudo docker pull daocloud.io/aber/pocscan:1.1
     	
 2. 把源码 clone 到本地,运行 docker 容器,把源码挂载到容器里
 
