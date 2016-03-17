@@ -70,6 +70,5 @@ def results(request):
 
 def poc_list(request):
     poc_list = get_poc_files('')
-    print poc_list
     return render(request, 'poc_list.html', {"poc_list":poc_list})
 
