@@ -24,25 +24,7 @@
     	$ sudo systemctl start docker
     	$ sudo docker pull daocloud.io/aber/pocscan:1.0 
     	
-2. 启动MySql,并建立数据库Pocscan.<font color=red>并设置成允许外连,不然Docker是连不上数据库的</font>,设置方法自行百度.
-
-		CREATE DATABASE `pocscan` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-
-
-3. 找到代码目录下的/pocsanui/settings.py
-
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.mysql', 
-                'NAME': 'pocscan',  	# 数据库名
-                'USER': 'root',      	# 数据库用户名
-                'PASSWORD': '123456',	# 数据库密码
-                'HOST': '192.168.1.1', 	# 宿(数)主(据)机(库)ip, 不要写127.0.0.1
-                'PORT': '3306',
-            }
-        }
-        
-4. 把源码 clone 到本地,运行 docker 容器,把源码挂载到容器里
+2. 把源码 clone 到本地,运行 docker 容器,把源码挂载到容器里
 
     	docker run -d -v /tmp/pocscan/:/www -p 8090:8000 ubuntu/pocscan:latest
     	
@@ -53,11 +35,11 @@
     	*/
     	
     	
-5. 把poc文件按找分类放到 /pocscan/pocs/ 下的文件夹
+3. 把poc文件按找分类放到 /pocscan/pocs/ 下的文件夹
 
-6. 访问一下 http://127.0.0.1:8090/login.出现登录界面就是搭建成功了。帐号是root,密码是password.
+4. 访问一下 http://127.0.0.1:8090/login. 出现登录界面就是搭建成功了。帐号是root,密码是password.
 
-7. 安装chrome插件,设置好API地址
+5. 安装chrome插件,设置好API地址
 	
 		http://192.168.1.2:8081/scan/     #注意scan后面要用"/",注意scan后面要用"/",注意scan后面要用"/"。重要的事情说三次
 
