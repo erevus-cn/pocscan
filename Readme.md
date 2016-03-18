@@ -58,4 +58,4 @@ A：上sebug.net,tangscan.com,beebeeto.com兑换.或者自己写.
 
 ### 问题反馈 当程序出现日天的bug，或者你有更好的建议想法时，请提issue
 
-__author__ : 只有两人bilibili团队,erevus, tlskbz
+__author__ : 只有两人bilibili安全团队,erevus, tlskbz
