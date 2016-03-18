@@ -36,7 +36,7 @@ Pocscan支持被动式扫描,还提供了chrome浏览器插件,插件会自动�
 
 4. 访问一下 http://127.0.0.1:8090/login. 出现登录界面就是搭建成功了。帐号是root,密码是password.
 
-5. 安装chrome插件,设置好API地址.扫描时保持插件页面的打开。
+5. 安装chrome插件(代码根目录那个crx文件),装好设置好API地址.要扫描时保持插件页面的打开。
 	
 		http://192.168.1.2:8081/scan/     #注意scan后面要用"/",注意scan后面要用"/",注意scan后面要用"/"。重要的事情说三次
 
@@ -56,6 +56,6 @@ A：上sebug.net,tangscan.com,beebeeto.com兑换.或者自己写.
 
 
 
-### 问题反馈 当程序出现日天的bug，或者你有更好的建议想法时，请联系我们
+### 问题反馈 当程序出现日天的bug，或者你有更好的建议想法时，请提issue
 
-__author__ : erevus-cn, tlskbz
+__author__ : 只有两人bilibili团队,erevus, tlskbz
