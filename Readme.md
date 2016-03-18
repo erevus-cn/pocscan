@@ -26,7 +26,7 @@
     	
 2. 把源码 clone 到本地,运行 docker 容器,把源码挂载到容器里
 
-    	docker run -d -v /tmp/pocscan/:/www -p 8090:8000 ubuntu/pocscan:latest
+        docker run -d -v /opt/docker/pocscan/:/www -p 8090:8000 daocloud.io/aber/pocscan:1.1
     	
     	/*
     	-v /tmp/pocscan/:/www 是将宿主机的/tmp/pocscan中的代码挂载到容器的/www目录中运行
