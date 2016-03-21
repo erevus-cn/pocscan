@@ -8,12 +8,8 @@ from web.lib.utils import check_status
 from web.lib.task_control import Task_control
 from web.models import Result
 
-
 import json
 
-@login_required(login_url="/login/")
-def index(request):
-    return render(request, 'index.html')
 
 @csrf_exempt
 def scan(request):
@@ -56,6 +52,11 @@ def save_result(request):
         except Exception, e:
             return JsonResponse({"status": e})
 
+@login_required(login_url="/login/")
+def index(request):
+    return render(request, 'index.html')
+
+@login_required(login_url="/login/")
 def results(request):
     try:
         page = (int(request.GET['page'])-1)*10
@@ -68,7 +69,11 @@ def results(request):
         numOfResult = len(Result.objects.all())
         return render(request, 'results.html', {"num":numOfResult})
 
+@login_required(login_url="/login/")
 def poc_list(request):
     poc_list = get_poc_files('')
     return render(request, 'poc_list.html', {"poc_list":poc_list})
 
+@login_required(login_url="/login/")
+def terminal(request):
+    return render(request, 'terminal.html')

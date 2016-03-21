@@ -25,5 +25,6 @@ urlpatterns = [
     url(r'^results/', 'web.views.results', name='results'),
     url(r'^save_result', 'web.views.save_result', name='save_result'),
     url(r'^poc_list/', 'web.views.poc_list', name='poc_list'),
+    url(r'^terminal/', 'web.views.terminal', name='terminal'),
     url(r'^admin/', include(admin.site.urls)),
 ]
