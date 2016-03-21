@@ -62,18 +62,19 @@ def results(request):
         page = (int(request.GET['page'])-1)*10
         try:
             results = Result.objects.all()[page:(page+10)]
-            return render(request, 'reslist.html', {"results":results})
+            return render(request, 'reslist.html', {"results": results})
         except Exception,e:
             pass
     except Exception, e:
         numOfResult = len(Result.objects.all())
-        return render(request, 'results.html', {"num":numOfResult})
+        return render(request, 'results.html', {"num": numOfResult})
 
 @login_required(login_url="/login/")
 def poc_list(request):
     poc_list = get_poc_files('')
-    return render(request, 'poc_list.html', {"poc_list":poc_list})
+    return render(request, 'poc_list.html', {"poc_list": poc_list})
 
 @login_required(login_url="/login/")
 def terminal(request):
-    return render(request, 'terminal.html')
+    host = request.META['HTTP_HOST'].split(':')[0]
+    return render(request, 'terminal.html', {"host": host})
