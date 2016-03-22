@@ -18,13 +18,14 @@ Pocscan支持被动式扫描,还提供了chrome浏览器插件,插件会自动�
 
 1. 安装Docker, 然后下载镜像
 
-    	$ curl -sSL https://get.daocloud.io/docker | sh 
+    	$ sudo curl -sSL https://get.daocloud.io/docker | sh 
     	$ sudo systemctl start docker
     	$ sudo docker pull daocloud.io/aber/pocscan:1.1.1
+    	$ sudo chmod -R 0777 [代码存放目录]
     	
 2. 把源码 clone 到本地,运行 docker 容器,把源码挂载到容器里
 
-        docker run -d -v [代码存放目录]:/www -p 8090:8000 daocloud.io/aber/pocscan:1.1.1
+        sudo docker run -d -v [代码存放目录]:/www -p 8090:8000 -p 8088:8088 daocloud.io/aber/pocscan:1.1.1
     	
     	/*
     	-p 8090:8000 是将容器的8000端口映射到宿主机的8090端口
@@ -46,7 +47,7 @@ Pocscan支持被动式扫描,还提供了chrome浏览器插件,插件会自动�
         $ cd [代码存放目录]
         $ [备份本地poc]
         $ git pull 
-        $ docker run -d -v [代码存放目录]:/www -p 8090:8000 daocloud.io/aber/pocscan:1.1.1
+        $ sudo docker run -d -v [代码存放目录]:/www -p 8090:8000 -p 8088:8088 daocloud.io/aber/pocscan:1.1.1
  		
  		
 ### TO DO
