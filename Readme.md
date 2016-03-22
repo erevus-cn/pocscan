@@ -20,11 +20,11 @@ Pocscan支持被动式扫描,还提供了chrome浏览器插件,插件会自动�
 
     	$ curl -sSL https://get.daocloud.io/docker | sh 
     	$ sudo systemctl start docker
-    	$ sudo docker pull daocloud.io/aber/pocscan:1.1
+    	$ sudo docker pull daocloud.io/aber/pocscan:1.1.1
     	
 2. 把源码 clone 到本地,运行 docker 容器,把源码挂载到容器里
 
-        docker run -d -v [代码存放目录]:/www -p 8090:8000 daocloud.io/aber/pocscan:1.1
+        docker run -d -v [代码存放目录]:/www -p 8090:8000 daocloud.io/aber/pocscan:1.1.1
     	
     	/*
     	-p 8090:8000 是将容器的8000端口映射到宿主机的8090端口
@@ -34,12 +34,21 @@ Pocscan支持被动式扫描,还提供了chrome浏览器插件,插件会自动�
     	
 3. 把poc文件按找分类放到 /pocscan/pocs/ 下的文件夹
 
-4. 访问一下 http://127.0.0.1:8090/login. 出现登录界面就是搭建成功了。帐号是root,密码是password.
+4. 访问一下 http://127.0.0.1:8090/login. 出现登录界面就是搭建成功了。后台和终端的帐号是root,密码是password.
 
 5. 安装chrome插件(代码根目录那个crx文件),装好设置好API地址.要扫描时保持插件页面的打开。
 	
 		http://192.168.1.2:8090/scan/     #注意scan后面要用"/",注意scan后面要用"/",注意scan后面要用"/"。重要的事情说三次
 
+### How to update
+
+        $ sudo docker pull daocloud.io/aber/pocscan:1.1.1
+        $ cd [代码存放目录]
+        $ [备份本地poc]
+        $ git pull 
+        $ docker run -d -v [代码存放目录]:/www -p 8090:8000 daocloud.io/aber/pocscan:1.1.1
+ 		
+ 		
 ### TO DO
 
 1. 集成 sqlmapapi 和 XSS 检测.(准备开发完成)
@@ -54,7 +63,9 @@ Q: POC 哪里找？
 
 A：上sebug.net,tangscan.com,beebeeto.com兑换.或者自己写.
 
+### Update log
 
+2016.3.22 v1.1.1 增加终端功能,可以进终端进行安装py依赖解决poc依赖库的问题
 
 ### 问题反馈 当程序出现日天的bug，或者你有更好的建议想法时，请提issue
 
