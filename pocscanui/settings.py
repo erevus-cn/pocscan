@@ -43,11 +43,14 @@ djcelery.setup_loader()
 #rabbitmq
 BROKER_URL = 'amqp://guest:guest@localhost:5672/'
 
-BROKER_HOST = "localhost"
-BROKER_PORT = 5672
-BROKER_USER = "guest"
-BROKER_PASSWORD = "guest"
-BROKER_VHOST = "/"
+CELERY_RESULT_BACKEND = 'djcelery.backends.cache:CacheBackend'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Asia/Shanghai'
+CELERY_ENABLE_UTC = True
+BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600} # 如果任务没有在 可见性超时 内确认接收，任务会被重新委派给另一个Worker并执行  默认1 hour.
+CELERYD_CONCURRENCY = 50
+CELERY_TASK_RESULT_EXPIRES = 1200  # celery任务执行结果的超时时间，我的任务都不需要返回结果
 
 #django suite
 SUIT_CONFIG = {
