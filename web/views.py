@@ -26,20 +26,30 @@ def scan(request):
         domains = str(request.POST.get('domains', "bilibili.com"))
         poc_name = request.POST.get('poc_name', "")
         task_name = request.POST.get('task_name', "")
-        # mode = request.POST.get('mode', 1)
+        mode = int(request.POST.get('mode', 1))
 
         targets = list(set(domains.split(',')))
         tmp_targets = list(set(domains.split(',')))
         # 已有数据或者在扫描的目标不进行扫描
-        for target in tmp_targets:
-            cannt_scan_target,status = check_status(target)
-            if cannt_scan_target:
-                targets.remove(cannt_scan_target)
-        if targets:
-            Task_control().launch(targets, poc_name, task_name)
-            return JsonResponse({"status": 200})
+        if mode == 0:
+            for target in tmp_targets:
+                cannt_scan_target,status = check_status(target)
+                if cannt_scan_target:
+                    targets.remove(cannt_scan_target)
+            if targets:
+                Task_control().launch(targets, poc_name, task_name)
+                return JsonResponse({"status": 200})
+            else:
+                return JsonResponse({"status": 1})
         else:
-            return JsonResponse({"status": 1})
+            cookie =request.POST.get('cookie', "")
+            ua = request.POST.get('ua', "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36")
+            if targets:
+                # 放爬虫
+                print cookie, ua
+                return JsonResponse({"status": 200})
+            else:
+                return JsonResponse({"status": 1})
 
 @csrf_exempt
 def save_result(request):

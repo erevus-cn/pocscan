@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html class=" ">
-  
-{% include 'header.html' %}
-  
+  {% include 'header.html' %}
+
   <body class="">
-
     {% include 'left.html' %}
-
     <main>
       {% include 'banner.html' %}
       <div class="container-fluid">
@@ -16,25 +13,14 @@
           </strong>
         </h1>
         <form class="form-horizontal" action="" method="POST" data-action="notpjax">
-            {% csrf_token %}
+          {% csrf_token %}
           <div class="form-group form-group-sm">
             <label class="col-xs-2 control-label">
               目标地址
             </label>
             <div class="col-xs-8">
-              <textarea id="domain" name="domain" class="form-control" rows="6" placeholder="http://www.bilibili.com
+          <textarea id="domain" name="domain" class="form-control" rows="6" placeholder="http://www.bilibili.com
 支持多行输入" ></textarea>
-            </div>
-          </div>
-          <div class="form-group form-group-sm">
-            <label class="col-xs-2 control-label">
-              任务名称
-            </label>
-            <div class="col-xs-8 form-inline">
-              <input id="task_name" name="task_name" class="form-control" placeholder="主站扫描" type="text">
-              <span class="form-control-static">
-                用来查看你的任务扫描状态
-              </span>
             </div>
           </div>
           <div class="form-group form-group-sm">
@@ -42,7 +28,8 @@
               扫描模块
             </label>
             <div class="col-xs-8 form-inline">
-              <input id="poc_name" name="poc_name" class="form-control" placeholder="struts2" type="text">
+              <input id="poc_name" name="poc_name" class="form-control" placeholder="struts2"
+              type="text">
               <span class="form-control-static">
                 如网站使用strus2,填入status2,扫描只会调用扫描struts2规则,不指定将使用所有扫描规则
               </span>
@@ -54,48 +41,129 @@
             </label>
             <div class="col-xs-8 form-inline">
               <select name="scan_mode" class="form-control" id="scan-mode">
-                <option value="0" data="0" selected="selected">
+                <option value="0" data="0" selected="slected">
                   默认模式
                 </option>
                 <option value="1" data="1">
-                  专家模式(未开发)
+                  专家模式
                 </option>
               </select>
             </div>
           </div>
+          <div class="form-group form-group-sm form-expert">
+            <label class="col-xs-2 control-label">
+              检测覆盖
+            </label>
+            <div class="col-xs-8">
+              <div class="checkbox">
+                <label>
+                  <input name="scan_plugin" type="checkbox" value="1" checked="checked"
+                  disabled="disbled">
+                  插件漏洞扫描
+                </label>
+                <span class="form-control-static">
+                  快速模式，只调用POC插件进行扫描，快速检测系统、服务、应用漏洞
+                </span>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input name="scan_web" type="checkbox" checked="checked" value="2">
+                  Web 爬虫
+                </label>
+                <span class="form-control-static">
+                  深度模式，利用爬虫深度当前host上的url.只会抓当前host,不抓其他host
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm form-expert">
+            <label class="col-xs-2 control-label">
+              配置模板
+            </label>
+            <div class="col-xs-8 form-inline">
+              <table class="table form-table form-inline">
+                <tbody>
+                  <tr>
+                    <th width="104">
+                      Cookie 设置
+                    </th>
+                    <td>
+                      <input type="text" class="form-control" value="" name="scan_cookie" id="scan_cookie">
+                      <span class="form-control-static">
+                        可不填，默认为系统自带 Cookie
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      UA 设置
+                    </th>
+                    <td>
+                      <input type="text" class="form-control" value="Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36" name="scan_ua" id="scan_ua">
+                      <span class="form-control-static">
+                        可不填，默认为系统自带 User-Agent
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>
+                      <td>
+                      </td>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
           <div class="form-group form-group-sm">
             <div class="col-xs-offset-2 col-xs-8">
-              <button type="button" onclick="add_task()" name="submit" value="add_task" class="btn btn-sm">
+                <button type="button" onclick="add_task()" name="submit" value="add_task" class="btn btn-sm">
                 启动扫描
               </button>
             </div>
           </div>
         </form>
-
       </div>
     </main>
-
   </body>
-<script>
-    function add_task(){
-        var domains = document.getElementById('domain').value;
-        var scan_domain = (domains.replace(/\n/g,","));
-        var task_name = document.getElementById('task_name').value;
-        var poc_name = document.getElementById('poc_name').value;
-        $.post('/scan/',{
-            'domains': scan_domain,
-            'poc_name': poc_name,
-            'task_name': task_name,
-            'mode': 1,
-            'csrfmiddlewaretoken':'{{ csrf_token }}' },
-                function(status){
-			      if(status.status==200){
-				    alert('添加成功');
-                  }
-                  if(status.status==1){
-				    alert('目标都已有扫描结果或正在扫描');
-                  }
-		});
+  <script>
+    function add_task() {
+      var domains = document.getElementById('domain').value;
+      var scan_domain = (domains.replace(/\n/g, ","));
+      var mode = document.getElementById('scan-mode').value;
+      var poc_name = document.getElementById('poc_name').value;
+      var cookie = document.getElementById('scan_cookie').value;
+      var ua = document.getElementById('scan_ua').value;
+      if(mode == 0) {
+          $.post('/scan/', {
+              'domains': scan_domain,
+              'poc_name': poc_name,
+              'mode': mode,
+              'csrfmiddlewaretoken': '{{ csrf_token }}'
+          },
+          function(status) {
+            if (status.status == 200) {
+              alert('添加成功');
+            }
+            if (status.status == 1) {
+              alert('目标都已有扫描结果或正在扫描');
+            }
+          });
+      }else{
+          $.post('/scan/', {
+              'domains': scan_domain,
+              'poc_name': poc_name,
+              'cookie': cookie,
+              'ua': ua,
+              'mode': mode,
+              'csrfmiddlewaretoken': '{{ csrf_token }}'
+          },
+          function(status) {
+            if (status.status == 200) {alert('添加成功');
+            }
+          });
+      }
     }
-</script>
+  </script>
+
 </html>
