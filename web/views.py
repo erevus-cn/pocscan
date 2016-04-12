@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from pocscan.library.utils import get_poc_files
 from web.lib.utils import check_status
 from web.lib.task_control import Task_control
-from web.models import Result
+from web.models import Result, Req_list
 from web.tasks import crawler
 
 import json
@@ -90,3 +90,37 @@ def poc_list(request):
 def terminal(request):
     host = request.META['HTTP_HOST'].split(':')[0]
     return render(request, 'terminal.html', {"host": host})
+
+@login_required(login_url="/login/")
+def get_req(request):
+    try:
+        offset = int(request.GET['offset'])
+        offend = int(request.GET['limit']) + offset
+        try:
+            scanhost = request.GET['search']
+            infobj = Req_list.objects.filter(host=scanhost).values()
+            info = list(infobj)
+            return JsonResponse({"total": len(info), "rows": info})
+        except Exception, e:
+            infobj = Req_list.objects.values()
+            allinfo = list(infobj)
+            info = allinfo[offset:offend]
+            return JsonResponse({"total": len(allinfo), "rows": info})
+    except Exception, e:
+        print e
+        return JsonResponse({"total": "0", "rows": []})
+
+@login_required(login_url="/login/")
+def del_req(request):
+    try:
+        reqids = request.POST['reqid']
+        reqids = reqids.split(',')
+        for reqid in reqids:
+            Req_list.objects.get(id=reqid).delete()
+        return HttpResponse("Success")
+    except Exception, e:
+        return HttpResponse(e)
+
+@login_required(login_url="/login/")
+def reqlist(request):
+    return render(request, 'reqlist.html')

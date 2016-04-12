@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html class=" ">
+<head>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-table.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-editable.css">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+</head>
+<body class="">
+{% include 'header.html' %} {% include 'left.html' %}
+<main>
+    {% include 'banner.html' %}
+    <div class="container-fluid">
+        <h1 class="bread-crumb"><strong>扫描结果</strong>
+            <div class="absolute-right">
+            </div>
+        </h1>
+        <div id="toolbar">
+            <button id="sqlcheck" class="btn btn-success" disabled>
+                <i class="glyphicon glyphicon-check"></i> To Sqlmap
+            </button>
+            <button id="xsscheck" class="btn btn-success" disabled>
+                <i class="glyphicon glyphicon-import"></i> To Arachni
+            </button>
+            <button id="remove" class="btn btn-danger" disabled>
+                <i class="glyphicon glyphicon-remove"></i> Delete
+            </button>
+        </div>
+        <table id="table"
+               data-toolbar="#toolbar"
+               data-search="true"
+               data-search-on-enter-key="true"
+               data-maintain-selected="true"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-show-export="false"
+               data-detail-view="true"
+               data-detail-formatter="detailFormatter"
+               data-minimum-count-columns="2"
+               data-show-pagination-switch="true"
+               data-pagination="true"
+               data-id-field="id"
+               data-page-list="[10, 25, 50, 100, ALL]"
+               data-page-size="40"
+               data-show-footer="false"
+               data-side-pagination="server"
+               data-url="/getreq"
+               data-response-handler="responseHandler">
+        </table>
+    </div>
+</main>
+<script>
+    var $table = $('#table'),
+            $remove = $('#remove'),
+            $sqli = $('#sqlcheck'),
+            $xss = $('#xsscheck'),
+            selections = [];
+
+    function initTable() {
+        $table.bootstrapTable({
+            height: getHeight(),
+            formatSearch: function () {
+            return 'www.baidu.com';
+            },
+            columns: [
+                {
+                    checkbox: true,
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'host',
+                    title: 'HOST',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'uri',
+                    title: 'PATH',
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'method',
+                    title: 'METHOD',
+                    align: 'center',
+                    valign: 'middle',
+                }
+            ]
+        });
+        setTimeout(function () {
+            $table.bootstrapTable('resetView');
+        }, 200);
+        $table.on('check.bs.table uncheck.bs.table ' +
+                'check-all.bs.table uncheck-all.bs.table', function () {
+            $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
+            $sqli.prop('disabled', !$table.bootstrapTable('getSelections').length);
+            $xss.prop('disabled', !$table.bootstrapTable('getSelections').length);
+
+
+            selections = getIdSelections();
+        });
+        $remove.click(function () {
+            var ids = getIdSelections();
+            $table.bootstrapTable('remove', {
+                field: 'id',
+                values: ids
+            });
+            $.post("/delreq",{'csrfmiddlewaretoken': '{{ csrf_token }}', "reqid":ids.join()});
+            $remove.prop('disabled', true);
+        });
+        $sqli.click(function () {
+            var ids = getIdSelections();
+            $.post("/autocheck",{'csrfmiddlewaretoken': '{{ csrf_token }}', "type":"sqli", "reqid":ids.join()});
+            $sqli.prop('disabled', true);
+        });
+        $xss.click(function () {
+            var ids = getIdSelections();
+            $.post("/autocheck",{'csrfmiddlewaretoken': '{{ csrf_token }}', "type":"xss", "reqid":ids.join()});
+            $xss.prop('disabled', true);
+        });
+        $(window).resize(function () {
+            $table.bootstrapTable('resetView', {
+                height: getHeight()
+            });
+        });
+    }
+
+    function getIdSelections() {
+        return $.map($table.bootstrapTable('getSelections'), function (row) {
+            return row.id
+        });
+    }
+
+    function responseHandler(res) {
+        $.each(res.rows, function (i, row) {
+            row.state = $.inArray(row.id, selections) !== -1;
+        });
+        return res;
+    }
+
+    function detailFormatter(index, row) {
+        var html = [];
+        $.each(row, function (key, value) {
+            console.log(key);
+            html.push('<p><b>' + key + ':</b> ' + value + '</p>');
+        });
+        return html.join('');
+    }
+
+    function getHeight() {
+        return $(window).height() - $('h1').outerHeight(true);
+    }
+
+    $(function () {
+        var scripts = [
+                    location.search.substring(1) || '/static/js/bootstrap-table.js',
+                    '/static/js/bootstrap-table-export.js',
+                    '/static/js/tableExport.js',
+                    '/static/js/bootstrap-table-editable.js',
+                    '/static/js/bootstrap-editable.js'
+                ],
+                eachSeries = function (arr, iterator, callback) {
+                    callback = callback || function () {
+                            };
+                    if (!arr.length) {
+                        return callback();
+                    }
+                    var completed = 0;
+                    var iterate = function () {
+                        iterator(arr[completed], function (err) {
+                            if (err) {
+                                callback(err);
+                                callback = function () {
+                                };
+                            }
+                            else {
+                                completed += 1;
+                                if (completed >= arr.length) {
+                                    callback(null);
+                                }
+                                else {
+                                    iterate();
+                                }
+                            }
+                        });
+                    };
+                    iterate();
+                };
+
+        eachSeries(scripts, getScript, initTable);
+    });
+
+    function getScript(url, callback) {
+        var head = document.getElementsByTagName('head')[0];
+        var script = document.createElement('script');
+        script.src = url;
+        var done = false;
+        script.onload = script.onreadystatechange = function () {
+            if (!done && (!this.readyState ||
+                    this.readyState == 'loaded' || this.readyState == 'complete')) {
+                done = true;
+                if (callback)
+                    callback();
+                script.onload = script.onreadystatechange = null;
+            }
+        };
+
+        head.appendChild(script);
+        return undefined;
+    }
+</script>
+</body>
+</html>

@@ -27,4 +27,7 @@ urlpatterns = [
     url(r'^poc_list/', 'web.views.poc_list', name='poc_list'),
     url(r'^terminal/', 'web.views.terminal', name='terminal'),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^getreq', 'web.views.get_req', ),
+    url(r'^reqlist', 'web.views.reqlist', ),
+    url(r'^delreq', 'web.views.del_req', ),
 ]
