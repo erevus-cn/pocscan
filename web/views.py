@@ -7,6 +7,7 @@ from pocscan.library.utils import get_poc_files
 from web.lib.utils import check_status
 from web.lib.task_control import Task_control
 from web.models import Result
+from web.tasks import crawler
 
 import json
 
@@ -45,9 +46,10 @@ def scan(request):
             cookie =request.POST.get('cookie', "")
             ua = request.POST.get('ua', "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36")
             if targets:
-                # 放爬虫
-                print cookie, ua
-                return JsonResponse({"status": 200})
+                for target in targets:
+                    # 放爬虫
+                    crawler.delay(target, cookie, ua)
+                    return JsonResponse({"status": 200})
             else:
                 return JsonResponse({"status": 1})
 

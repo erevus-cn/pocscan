@@ -2,6 +2,7 @@
 import gevent
 from gevent.pool import Pool
 from web.lib.utils import *
+from web.lib.crawler import MyCrawler, similarity
 from pocscan.poc_launcher import Poc_Launcher
 from celery import Celery, platforms, task
 
@@ -18,3 +19,20 @@ def run_task_in_gevent(url_list, poc_file_dict):     # url_list 每个进程分�
                     target = fix_target(target)
                     pool.add(gevent.spawn(poc.poc_verify, target, plugin_type, poc_file))
     pool.join()
+
+@task(time_limit=3600)
+def crawler(target, cookie, ua):
+    result = {}
+    crawl_count = 5
+    craw = MyCrawler(target, cookie, ua)
+    craw.crawling(target, crawl_count)
+    url_list = list(set( craw.linkQuence.getUnvisitedUrl()+craw.linkQuence.getVisitedUrl() ))
+    size = 1000000000
+    for url in url_list:
+        try:
+            temp = { str(similarity(url,size)): url}
+            result.update(temp)
+        except Exception, e:
+            print e
+    # 这里存数据库
+    return result

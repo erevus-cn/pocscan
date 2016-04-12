@@ -4,6 +4,7 @@ import multiprocessing
 from pocscan.library.utils import get_poc_files, url_seg
 from web.tasks import run_task_in_gevent
 from web.models import Tasks_status
+from crawler import MyCrawler
 
 class Task_control(object):
 
