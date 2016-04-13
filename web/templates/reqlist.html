@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html class=" ">
 <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/static/css/vendor.css">
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <link rel="stylesheet" href="/static/css/bootstrap-table.css">
-    <link rel="stylesheet" href="/static/css/bootstrap-editable.css">
+    <link rel="stylesheet" href="/static/css/corp.css">
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
-
+    <title>
+        Pocscan
+    </title>
 </head>
 <body class="">
-{% include 'header.html' %} {% include 'left.html' %}
+{% include 'left.html' %}
 <main>
     {% include 'banner.html' %}
     <div class="container-fluid">
@@ -20,9 +27,6 @@
         <div id="toolbar">
             <button id="sqlcheck" class="btn btn-success" disabled>
                 <i class="glyphicon glyphicon-check"></i> To Sqlmap
-            </button>
-            <button id="xsscheck" class="btn btn-success" disabled>
-                <i class="glyphicon glyphicon-import"></i> To Arachni
             </button>
             <button id="remove" class="btn btn-danger" disabled>
                 <i class="glyphicon glyphicon-remove"></i> Delete
@@ -44,7 +48,7 @@
                data-pagination="true"
                data-id-field="id"
                data-page-list="[10, 25, 50, 100, ALL]"
-               data-page-size="40"
+               data-page-size="20"
                data-show-footer="false"
                data-side-pagination="server"
                data-url="/getreq"
@@ -56,14 +60,13 @@
     var $table = $('#table'),
             $remove = $('#remove'),
             $sqli = $('#sqlcheck'),
-            $xss = $('#xsscheck'),
             selections = [];
 
     function initTable() {
         $table.bootstrapTable({
             height: getHeight(),
             formatSearch: function () {
-            return 'www.baidu.com';
+                return 'www.baidu.com';
             },
             columns: [
                 {
@@ -95,7 +98,7 @@
                 'check-all.bs.table uncheck-all.bs.table', function () {
             $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
             $sqli.prop('disabled', !$table.bootstrapTable('getSelections').length);
-            $xss.prop('disabled', !$table.bootstrapTable('getSelections').length);
+
 
 
             selections = getIdSelections();
@@ -106,18 +109,13 @@
                 field: 'id',
                 values: ids
             });
-            $.post("/delreq",{'csrfmiddlewaretoken': '{{ csrf_token }}', "reqid":ids.join()});
+            $.post("/delreq", {'csrfmiddlewaretoken': '{{ csrf_token }}', "reqid": ids.join()});
             $remove.prop('disabled', true);
         });
         $sqli.click(function () {
             var ids = getIdSelections();
-            $.post("/autocheck",{'csrfmiddlewaretoken': '{{ csrf_token }}', "type":"sqli", "reqid":ids.join()});
+            $.post("/autocheck", {'csrfmiddlewaretoken': '{{ csrf_token }}', "type": "sqli", "reqid": ids.join()});
             $sqli.prop('disabled', true);
-        });
-        $xss.click(function () {
-            var ids = getIdSelections();
-            $.post("/autocheck",{'csrfmiddlewaretoken': '{{ csrf_token }}', "type":"xss", "reqid":ids.join()});
-            $xss.prop('disabled', true);
         });
         $(window).resize(function () {
             $table.bootstrapTable('resetView', {

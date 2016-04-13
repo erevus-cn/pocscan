@@ -3,7 +3,7 @@ from django.db import models
 
 class Result(models.Model):
     domain = models.TextField()
-    poc_file = models.TextField()
+    poc_file = models.TextField(default='', null=True)
     result = models.TextField()
     date = models.DateTimeField(auto_now_add=True, blank=True)
     is_fixed = models.NullBooleanField(default=False)

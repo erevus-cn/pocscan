@@ -85,6 +85,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'djcelery',
     'web',
+    'chtscan',
     )
 
 MIDDLEWARE_CLASSES = (

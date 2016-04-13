@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^terminal/', 'web.views.terminal', name='terminal'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^getreq', 'web.views.get_req', ),
-    url(r'^reqlist', 'web.views.reqlist', ),
+    url(r'^reqlist', 'web.views.reqlist', name='reqlist'),
     url(r'^delreq', 'web.views.del_req', ),
+    url(r'^autocheck', 'web.views.sxcheck', ),
 ]
