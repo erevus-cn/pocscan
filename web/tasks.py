@@ -4,7 +4,7 @@ from gevent.pool import Pool
 from web.lib.utils import *
 from web.lib.crawler import MyCrawler, similarity
 from pocscan.poc_launcher import Poc_Launcher
-from celery import Celery, platforms, task
+from celery import task
 from .models import Req_list
 from urlparse import urlparse
 
