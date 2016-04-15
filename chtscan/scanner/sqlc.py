@@ -8,7 +8,7 @@ class sqli(Scanner):
     def get_setting(self):
         self.scanner_exe = 'sqlmap'
         return dict(
-            scanner_exe='/usr/local/bin/sqlmap',
+            scanner_exe='/usr/share/sqlmap/sqlmap.py',
             out_dir='/tmp/',
         )
 
@@ -45,5 +45,7 @@ class sqli(Scanner):
         self.vuln_type = "sqli"
         report = re.findall(r'\n    Payload:(.*?)\n', self.result[0])
         if len(report) == 0: return
-        report.append("--cookie " + self.req.cookie)
+
+        if len(self.req.cookie) > 0:
+            report.append("Cookie: " + self.req.cookie)
         self.detail = report
