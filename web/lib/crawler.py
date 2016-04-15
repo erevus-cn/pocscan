@@ -44,11 +44,10 @@ class MyCrawler:
                     if host in link and self.opener.open(link, timeout=0.5).code==200:
                         self.linkQuence.addUnvisitedUrl(link)
                 except Exception, e:
-                    print e
+                    pass
 
     #获取源码中得超链接
     def getHyperLinks(self, url):
-        # print req.get("http://passport.bilibili.com/site", headers=self.headers).ok
         try:
             links = []
             content = self.opener.open(url, timeout=2).read()
@@ -60,7 +59,7 @@ class MyCrawler:
                     links.append(link)
             return links
         except Exception,e:
-            print str(e)
+            pass
             return [str(e),None]
 
 
