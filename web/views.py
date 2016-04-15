@@ -76,7 +76,7 @@ def index(request):
 def monitor(request):
     running_task = []
     try:
-        url = FLOWER_API+'/tasks'
+        url = FLOWER_API+'/tasks?limit=10&state=STARTED'
         tasks = json.loads(req.get(url).content)
         for tid in tasks.iterkeys():
             running_task.append(tasks[tid])

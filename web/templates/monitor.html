@@ -7,7 +7,7 @@
 <main>
     {% include 'banner.html' %}
     <div class="container-fluid">
-        <h1 class="bread-crumb"> <strong>任务状态</strong></h1>
+        <h1 class="bread-crumb"> <strong>扫描中的任务</strong></h1>
         <table class="table table-hover">
             <thead>
             <tr>
@@ -19,10 +19,10 @@
             <tbody id="resulist">
             {% for task in running_task %}
                 <tr>
-                    <td width="40%">{{ task.name }}</td>
-                    <td width="50%">
-                        <div class='pre-wrapper' style="height: 20px;">
-                            <pre>{{ task.args | geturl }}</pre>
+                    <td width="20%">{{ task.name }}</td>
+                    <td width="70%">
+                        <div class='pre-wrapper' style="height: 100px;">
+                            <pre>{{ task.args }}</pre>
                         </div>
                     </td>
                     <td width="10%">{{ task.state }}</td>
