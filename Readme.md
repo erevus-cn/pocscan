@@ -39,7 +39,7 @@ Pocscan支持被动式扫描,还提供了chrome浏览器插件,插件会自动�
 
 4. 访问一下 http://127.0.0.1:8090/login. 出现登录界面就是搭建成功了。后台和终端的帐号是root,密码是password.
 
-5. 安装chrome插件(代码根目录那个crx文件),装好设置好API地址.要扫描时保持插件页面的打开。
+5. (最新版插件暂时未开发完，请停用插件)安装chrome插件(代码根目录那个crx文件),装好设置好API地址.要扫描时保持插件页面的打开。
 	
 		http://192.168.1.2:8090/scan/     #注意scan后面要用"/",注意scan后面要用"/",注意scan后面要用"/"。重要的事情说三次
 
@@ -69,8 +69,9 @@ A：上sebug.net,tangscan.com,beebeeto.com兑换.或者自己写.
 
 Q: 不知道我的poc有没有运行啊,怎么进行debug?
 
-A: 1. 可以选择进入web终端,/var/log/supervisor目录下看celery的日志.
-   2. 使用flower查看任务状态,但是导致未授权访问漏洞，sudo docker run -d -v [代码存放目录]:/www -p 8090:8000 -p 8088:8088 -p 5555:5555 daocloud.io/aber/pocscan:lastest。然后访问5555端口
+A: 1.可以选择进入web终端,/var/log/supervisor目录下看celery的日志.
+
+   2.使用flower查看任务状态,但是导致未授权访问漏洞，sudo docker run -d -v [代码存放目录]:/www -p 8090:8000 -p 8088:8088 -p 5555:5555 daocloud.io/aber/pocscan:lastest。然后访问5555端口
    
 
 ### Update log
