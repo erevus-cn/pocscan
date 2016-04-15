@@ -9,8 +9,10 @@ from web.lib.task_control import Task_control
 from web.models import Result, Req_list
 from web.tasks import crawler
 from chtscan.tasks import sql
+from pocscanui.settings import FLOWER_API
 
 import json
+import requests as req
 
 
 @csrf_exempt
@@ -55,7 +57,6 @@ def scan(request):
             else:
                 return JsonResponse({"status": 1})
 
-
 @csrf_exempt
 def save_result(request):
     try:
@@ -67,11 +68,22 @@ def save_result(request):
     except Exception, e:
         return JsonResponse({"status": e})
 
-
 @login_required(login_url="/login/")
 def index(request):
     return render(request, 'index.html')
 
+@login_required(login_url="/login/")
+def monitor(request):
+    running_task = []
+    try:
+        url = FLOWER_API+'/tasks'
+        tasks = json.loads(req.get(url).content)
+        for tid in tasks.iterkeys():
+            running_task.append(tasks[tid])
+        return render(request, 'monitor.html', {"running_task": running_task})
+    except Exception, e:
+        return HttpResponse(e)
+        # return HttpResponse('flower is not running')
 
 @login_required(login_url="/login/")
 def results(request):

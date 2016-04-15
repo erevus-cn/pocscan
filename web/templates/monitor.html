@@ -1,0 +1,43 @@
+{% load sploit %}
+<!DOCTYPE html>
+<html class=" ">
+<head> </head>
+<body class="">
+{% include 'header.html' %}  {% include 'left.html' %}
+<main>
+    {% include 'banner.html' %}
+    <div class="container-fluid">
+        <h1 class="bread-crumb"> <strong>任务状态</strong></h1>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>任务名称</th>
+                <th>传入参数</th>
+                <th>状态</th>
+            </tr>
+            </thead>
+            <tbody id="resulist">
+            {% for task in running_task %}
+                <tr>
+                    <td width="40%">{{ task.name }}</td>
+                    <td width="50%">
+                        <div class='pre-wrapper' style="height: 20px;">
+                            <pre>{{ task.args | geturl }}</pre>
+                        </div>
+                    </td>
+                    <td width="10%">{{ task.state }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="6">
+                    <ul id="pagination-ddol" class="pagination-sm pull-right"></ul>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</main>
+</body>
+</html>

@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'logout.html'}),
     url(r'^scan/', 'web.views.scan', name='scan'),
     url(r'^results/', 'web.views.results', name='results'),
+    url(r'^monitor/', 'web.views.monitor', name='monitor'),
     url(r'^save_result', 'web.views.save_result', name='save_result'),
     url(r'^poc_list/', 'web.views.poc_list', name='poc_list'),
     url(r'^terminal/', 'web.views.terminal', name='terminal'),
