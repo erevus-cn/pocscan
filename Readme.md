@@ -22,7 +22,7 @@ Pocscan支持被动式扫描,还提供了chrome浏览器插件,插件会自动�
 
     	$ sudo curl -sSL https://get.daocloud.io/docker | sh 
     	$ sudo systemctl start docker
-    	$ sudo docker pull daocloud.io/aber/pocscan:lastest
+    	$ sudo docker pull daocloud.io/aber/pocscan:latest
     	$ sudo chmod -R 0777 [代码存放目录]
     	
 2. 把源码 clone 到本地,运行 docker 容器,把源码挂载到容器里
@@ -71,7 +71,7 @@ Q: 不知道我的poc有没有运行啊,怎么进行debug?
 
 A: 1.可以选择进入web终端,/var/log/supervisor目录下看celery的日志.
 
-   2.使用flower查看任务状态,但是导致未授权访问漏洞，sudo docker run -d -v [代码存放目录]:/www -p 8090:8000 -p 8088:8088 -p 5555:5555 daocloud.io/aber/pocscan:lastest。然后访问5555端口
+   2.使用flower查看任务状态,但是导致未授权访问漏洞，sudo docker run -d -v [代码存放目录]:/www -p 8090:8000 -p 8088:8088 -p 5555:5555 daocloud.io/aber/pocscan:latest。然后访问5555端口
    
 
 ### Update log
