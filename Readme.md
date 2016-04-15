@@ -12,7 +12,9 @@ Pocscan支持被动式扫描,还提供了chrome浏览器插件,插件会自动�
 
 ![前台](./screenshots/1.png)
 
-![后台](./screenshots/2.jpg)
+![爬虫](./screenshots/2.png)
+
+![sqlmap](./screenshots/3.png)
 
 ### Installation
 
