@@ -82,8 +82,7 @@ def monitor(request):
             running_task.append(tasks[tid])
         return render(request, 'monitor.html', {"running_task": running_task})
     except Exception, e:
-        return HttpResponse(e)
-        # return HttpResponse('flower is not running')
+        return HttpResponse('flower is not running')
 
 @login_required(login_url="/login/")
 def results(request):
