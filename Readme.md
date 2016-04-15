@@ -45,7 +45,7 @@ Pocscan支持被动式扫描,还提供了chrome浏览器插件,插件会自动�
 
 ### How to update
 
-        $ sudo docker pull daocloud.io/aber/pocscan:1.1.1
+        $ sudo docker pull daocloud.io/aber/pocscan:lastest
         $ cd [代码存放目录]
         $ [备份本地poc]
         $ git pull 
