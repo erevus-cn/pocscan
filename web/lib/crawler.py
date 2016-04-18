@@ -41,10 +41,27 @@ class MyCrawler:
                 try:
                     if not urlparse.urlparse(link).netloc :
                         link = "http://"+host+'/'+link
-                    if host in link and self.opener.open(link, timeout=0.5).code==200:
+                    if host in link and self.opener.open(link, timeout=1).code==200:
                         self.linkQuence.addUnvisitedUrl(link)
                 except Exception, e:
                     pass
+
+    def file_type_filter(self, url):
+        white_list = ['', '.php', 'cgi'
+                      '.asp', '.aspx', 'ashx'
+                      '.do', '.action', 'jsp'
+                      '.html', 'htm', '.shtml', '.stm', '.shtm',
+                      'json',
+                      ]
+        try:
+            path = urlparse.urlparse(url).path.replace('//', '/')
+            file_type = os.path.splitext(path)[1]
+            if file_type in white_list:
+                return True
+            else:
+                return  False
+        except Exception,e :
+            pass
 
     #获取源码中得超链接
     def getHyperLinks(self, url):
@@ -52,11 +69,12 @@ class MyCrawler:
             links = []
             content = self.opener.open(url, timeout=2).read()
             host  = urlparse.urlparse(url).netloc
-            links = re.findall(r"(?<=href=\").+?(?=\")|(?<=href=\').+?(?=\')", content)
-            for link in links:
+            links = re.findall("(?<=href=\").+?(?=\")|(?<=href=\').+?(?=\')|(?=http:\/\/|https:\/\/).+?(?=\'|\")", content)
+            for link in links[:1000]:
                 if not urlparse.urlparse(link).netloc :
                     link = "http://"+host+'/'+link
-                    links.append(link)
+                    if self.file_type_filter(link):
+                        links.append(link)
             return links
         except Exception,e:
             pass
