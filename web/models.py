@@ -26,9 +26,15 @@ class Req_list(models.Model):
     host = models.CharField('HOST', max_length=40, )
     uri = models.CharField('FILE', max_length=100, default='/', )
     url = models.TextField('URL', )
+    ua = models.TextField('User-agent', )
     referer = models.TextField('REFERER', null=True)
     data = models.TextField('REQUEST BODY', null=True)
     cookie = models.TextField('COOKIE', default='', )
+
+
+    class Meta:
+        unique_together = (('method', 'host', 'uri',))
+
 
     def __self__(self):
         return self.url

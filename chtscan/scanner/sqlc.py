@@ -22,7 +22,7 @@ class sqli(Scanner):
             "--disable-coloring",
             "--text-only",
             "--purge-output",
-            "--random-agent",
+            "--user-agent", self.req.ua,
             "-o",
             "--crawl=0",
             "--output-dir", self.get_setting()['out_dir'],

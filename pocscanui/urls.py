@@ -32,4 +32,5 @@ urlpatterns = [
     url(r'^reqlist', 'web.views.reqlist', name='reqlist'),
     url(r'^delreq', 'web.views.del_req', ),
     url(r'^autocheck', 'web.views.sxcheck', ),
+    url(r'^chromeapi', 'web.views.chromeapi', ),
 ]

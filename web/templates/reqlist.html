@@ -99,7 +99,6 @@
             $sqli.prop('disabled', !$table.bootstrapTable('getSelections').length);
 
 
-
             selections = getIdSelections();
         });
         $remove.click(function () {
@@ -139,8 +138,9 @@
     function detailFormatter(index, row) {
         var html = [];
         $.each(row, function (key, value) {
-            console.log(key);
-            html.push('<p><b>' + key + ':</b> ' + value + '</p>');
+            if (key != '0') {
+                html.push('<p><b>' + key + ':</b> ' + value + '</p>');
+            }
         });
         return html.join('');
     }

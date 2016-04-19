@@ -45,6 +45,7 @@ def crawler(target, cookie, ua):
                      host=tmp.netloc,
                      uri=tmp.path,
                      url=url.encode("utf8"),
+                     ua=ua,
                      cookie=cookie,
                      ).save()
     except Exception, e:

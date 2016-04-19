@@ -10,6 +10,8 @@ from web.models import Result, Req_list
 from web.tasks import crawler
 from chtscan.tasks import sql
 from pocscanui.settings import FLOWER_API
+from urlparse import urlparse
+import os
 
 import json
 import requests as req
@@ -57,6 +59,46 @@ def scan(request):
             else:
                 return JsonResponse({"status": 1})
 
+
+@csrf_exempt
+def chromeapi(request):
+    method = request.POST.get('method')
+    url = request.POST.get('url')
+    cookie = request.POST.get('cookie', '')
+    ua = request.POST.get('ua', '')
+    referer = request.POST.get('referer', '')
+    data = request.POST.get('data', '')
+    tmparse = urlparse(url)
+    host = tmparse.netloc
+    uri = tmparse.path
+    white_list = ['', '.php', 'cgi',
+                  '.asp', '.aspx', 'ashx',
+                  '.do', '.action', 'jsp',
+                  '.html', 'htm', '.shtml', '.stm', '.shtm',
+                  'json',
+                  ]
+
+    try:
+        file_type = os.path.splitext(uri.replace('//', '/'))[1]
+        if file_type in white_list:
+            req = Req_list(method=method,
+                           url=url,
+                           host=host,
+                           uri=uri,
+                           data=data,
+                           referer=referer,
+                           ua=ua,
+                           cookie=cookie,
+                           )
+            req.save()
+            sql.delay(req.id)
+            return JsonResponse({"status": req.id})
+        else:
+            return JsonResponse({"status": "haved in the reqlist"})
+    except Exception, e:
+        return JsonResponse({"status": "error"})
+
+
 @csrf_exempt
 def save_result(request):
     try:
@@ -68,21 +110,24 @@ def save_result(request):
     except Exception, e:
         return JsonResponse({"status": e})
 
+
 @login_required(login_url="/login/")
 def index(request):
     return render(request, 'index.html')
+
 
 @login_required(login_url="/login/")
 def monitor(request):
     running_task = []
     try:
-        url = FLOWER_API+'/tasks?limit=10&state=STARTED'
+        url = FLOWER_API + '/tasks?limit=10&state=STARTED'
         tasks = json.loads(req.get(url).content)
         for tid in tasks.iterkeys():
             running_task.append(tasks[tid])
         return render(request, 'monitor.html', {"running_task": running_task})
     except Exception, e:
         return HttpResponse('flower is not running')
+
 
 @login_required(login_url="/login/")
 def results(request):
@@ -126,7 +171,6 @@ def get_req(request):
             info = allinfo[offset:offend]
             return JsonResponse({"total": len(allinfo), "rows": info})
     except Exception, e:
-        print e
         return JsonResponse({"total": "0", "rows": []})
 
 
@@ -139,7 +183,7 @@ def del_req(request):
             Req_list.objects.get(id=reqid).delete()
         return HttpResponse("Success")
     except Exception, e:
-        return HttpResponse(e)
+        return HttpResponse("Error")
 
 
 @login_required(login_url="/login/")
@@ -156,4 +200,4 @@ def sxcheck(request):
             sql.delay(reqid)
         return HttpResponse("Success")
     except Exception, e:
-        return HttpResponse(e)
+        return HttpResponse("Error")
