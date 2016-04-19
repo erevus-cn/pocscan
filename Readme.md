@@ -41,7 +41,7 @@ Pocscan支持被动式扫描,还提供了chrome浏览器插件,插件会自动�
 
 5. 安装chrome插件(代码根目录那个crx文件),装好设置好API地址.要扫描时保持插件页面的打开。
 	
-		http://192.168.1.2:8090/chromeapi/     #注意scan后面要用"/",注意scan后面要用"/",注意scan后面要用"/"。重要的事情说三次
+		http://192.168.1.2:8090/chromeapi/     #注意chromeapi后面要用"/",注意chromeapi后面要用"/",注意chromeapi后面要用"/"。重要的事情说三次
 
 ### How to update
 
