@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^$', 'web.views.index', name='home'),
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'logout.html'}),
-    url(r'^scan/', 'web.views.scan', name='scan'),
+    #    url(r'^scan/', 'web.views.scan', name='scan'),
     url(r'^results/', 'web.views.results', name='results'),
     url(r'^monitor/', 'web.views.monitor', name='monitor'),
     url(r'^save_result', 'web.views.save_result', name='save_result'),
@@ -32,5 +32,5 @@ urlpatterns = [
     url(r'^reqlist', 'web.views.reqlist', name='reqlist'),
     url(r'^delreq', 'web.views.del_req', ),
     url(r'^autocheck', 'web.views.sxcheck', ),
-    url(r'^chromeapi', 'web.views.chromeapi', ),
+    url(r'^chromeapi', 'web.views.scancheck', ),
 ]

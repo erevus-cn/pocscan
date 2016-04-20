@@ -59,6 +59,16 @@ def scan(request):
             else:
                 return JsonResponse({"status": 1})
 
+@csrf_exempt
+def scancheck(request):
+    module = request.POST.get('module')
+    if module == 'pocscan':
+        scan(request)
+    elif module == 'sqlmap':
+        chromeapi(request)
+    else:
+        return JsonResponse({'status': "error"})
+
 
 @csrf_exempt
 def chromeapi(request):
