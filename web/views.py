@@ -72,7 +72,7 @@ def scancheck(request):
             if cannt_scan_target:
                 targets.remove(cannt_scan_target)
         if targets:
-            Task_control().launch(targets, poc_name, task_name)
+            Task_control().launch(targets, "", "")
             return JsonResponse({"status": 200})
         else:
             return JsonResponse({"status": 1})
