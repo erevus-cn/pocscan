@@ -59,15 +59,28 @@ def scan(request):
             else:
                 return JsonResponse({"status": 1})
 
+
 @csrf_exempt
 def scancheck(request):
     module = request.POST.get('module')
     if module == 'pocscan':
-        scan(request)
+        domains = str(request.POST.get('domains', "bilibili.com"))
+        targets = list(set(domains.split(',')))
+        tmp_targets = list(set(domains.split(',')))
+        for target in tmp_targets:
+            cannt_scan_target, status = check_status(target)
+            if cannt_scan_target:
+                targets.remove(cannt_scan_target)
+        if targets:
+            Task_control().launch(targets, poc_name, task_name)
+            return JsonResponse({"status": 200})
+        else:
+            return JsonResponse({"status": 1})
     elif module == 'sqlmap':
         chromeapi(request)
     else:
         return JsonResponse({'status': "error"})
+    return JsonResponse({'status': "200"})
 
 
 @csrf_exempt
