@@ -82,6 +82,7 @@ A: 1.可以选择进入web终端,/var/log/supervisor目录下看celery的日志.
 
 2016.4.19 v2.1 增加chrome插件,增加chromeapi
 
+2016.4.22 v2.2 chrome增加选择模式
 
 
 ### 问题反馈 当程序出现日天的bug，或者你有更好的建议想法时，请提issue
