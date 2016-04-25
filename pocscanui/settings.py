@@ -50,6 +50,7 @@ CELERY_ENABLE_UTC = True
 BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600} # 如果任务没有在 可见性超时 内确认接收，任务会被重新委派给另一个Worker并执行  默认1 hour.
 CELERY_CONCURRENCY = 50
 CELERY_TASK_RESULT_EXPIRES = 1200  # celery任务执行结果的超时时间，我的任务都不需要返回结果
+CELERYD_TASK_TIME_LIMIT = 1800 #任务超时时间
 
 #django suite
 SUIT_CONFIG = {
