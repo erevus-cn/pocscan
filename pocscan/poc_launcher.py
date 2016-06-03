@@ -4,6 +4,7 @@ from frame.beebeeto import Beebeeto
 from frame.pocsuite import PocSuite
 from frame.tangscan import Tangscan
 from frame.kspoc import KsPoc
+from frame.bugscan import Bugscan
 from pocscanui.settings import SAVE_RESULT_API
 import requests as req
 
@@ -20,6 +21,7 @@ class Poc_Launcher(object):
         'pocsuite': PocSuite,
         'tangscan': Tangscan,
         'kspoc'   : KsPoc,
+        'bugscan' : Bugscan,
     }
 
     def __get_pocs_count(self, poc_files):

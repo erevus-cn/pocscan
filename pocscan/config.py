@@ -6,5 +6,5 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 POCS_DIR = BASE_DIR+'/pocs/'
 PLUGINS_DIR = BASE_DIR+'/plugins/'
 
-PLUGINS_SUPPORT = ['beebeeto', 'pocsuite', 'tangscan', 'kspoc']
+PLUGINS_SUPPORT = ['beebeeto', 'pocsuite', 'tangscan', 'kspoc', 'bugscan']
 
