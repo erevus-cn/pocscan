@@ -76,6 +76,7 @@ A: 1.可以选择进入web终端,/var/log/supervisor目录下看celery的日志.
 
 ### Update log
 
+
 2016.3.22 v1.1.1 增加终端功能,可以进终端进行安装py依赖解决poc依赖库的问题
 
 2016.4.15 v2.0 增加爬虫和sqlmap功能
@@ -83,6 +84,8 @@ A: 1.可以选择进入web终端,/var/log/supervisor目录下看celery的日志.
 2016.4.19 v2.1 增加chrome插件,增加chromeapi
 
 2016.4.22 v2.2 chrome增加选择模式
+
+2016.6.27 v3.0 支持bugscan插件
 
 
 ### 问题反馈 当程序出现日天的bug，或者你有更好的建议想法时，请提issue
