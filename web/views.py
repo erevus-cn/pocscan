@@ -157,7 +157,8 @@ def results(request):
     try:
         page = (int(request.GET['page']) - 1) * 10
         try:
-            results = Result.objects.all()[page:(page + 10)]
+            results = Result.objects.all()[::-1]
+            results = results[page:(page + 10)]
             return render(request, 'reslist.html', {"results": results})
         except Exception, e:
             pass
