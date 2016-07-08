@@ -38,8 +38,8 @@ def crawler(target, cookie, ua):
             result.update(temp)
         except Exception, e:
             print e
-    try:
-        for url in result.values():
+    for url in result.values():
+        try:
             tmp = urlparse(url)
             Req_list(method="GET",
                      host=tmp.netloc,
@@ -48,6 +48,6 @@ def crawler(target, cookie, ua):
                      ua=ua,
                      cookie=cookie,
                      ).save()
-    except Exception, e:
-        pass
+        except Exception, e:
+            pass
     return result
