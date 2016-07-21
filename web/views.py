@@ -63,10 +63,11 @@ def scan(request):
                 return JsonResponse({"status": 1})
         elif mode == 2:
             try:
-                targets = ','.join(targets)
                 ports = request.POST['port']
                 options = request.POST['option']
-                port.delay(targets, ports, options)
+                for tar in targets:
+                    port.delay(tar, ports, options)
+
                 return JsonResponse({"status": 200})
             except Exception,e:
                 return JsonResponse({"status": 1})

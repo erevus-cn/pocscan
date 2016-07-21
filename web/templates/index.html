@@ -25,18 +25,6 @@
             </div>
             <div class="form-group form-group-sm">
                 <label class="col-xs-2 control-label">
-                    扫描模块
-                </label>
-                <div class="col-xs-8 form-inline">
-                    <input id="poc_name" name="poc_name" class="form-control" placeholder="struts2"
-                           type="text">
-              <span class="form-control-static">
-                如网站使用struts2,填入struts2,扫描只会调用扫描struts2规则,不指定将使用所有扫描规则
-              </span>
-                </div>
-            </div>
-            <div class="form-group form-group-sm">
-                <label class="col-xs-2 control-label">
                     检测模式
                 </label>
                 <div class="col-xs-8 form-inline">
@@ -51,6 +39,18 @@
                             端口扫描
                         </option>
                     </select>
+                </div>
+            </div>
+            <div class="form-group form-group-sm">
+                <label class="col-xs-2 control-label">
+                    扫描模块
+                </label>
+                <div class="col-xs-8 form-inline">
+                    <input id="poc_name" name="poc_name" class="form-control" placeholder="struts2"
+                           type="text">
+              <span class="form-control-static">
+                如网站使用struts2,填入struts2,扫描只会调用扫描struts2规则,不指定将使用所有扫描规则
+              </span>
                 </div>
             </div>
             <div class="form-group form-group-sm form-expert">
@@ -120,7 +120,7 @@
                     </table>
                 </div>
             </div>
-            <div class="form-group form-group-sm form-expert form-table">
+            <div class="form-group form-group-sm form-table">
                 <label class="col-xs-2 control-label">
                     扫描配置
                 </label>
