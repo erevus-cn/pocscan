@@ -50,7 +50,7 @@ def scan(request):
                 return JsonResponse({"status": 200})
             else:
                 return JsonResponse({"status": 1})
-        else:
+        elif mode == 1:
             cookie = request.POST.get('cookie', "")
             ua = request.POST.get('ua',
                                   "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36")
@@ -61,6 +61,15 @@ def scan(request):
                     return JsonResponse({"status": 200})
             else:
                 return JsonResponse({"status": 1})
+        elif mode == 2:
+            try:
+                targets = ','.join(targets)
+                ports = request.POST['ports']
+                options = request.POST['option']
+                port.delay(targets, ports, options)
+                return JsonResponse({"status": 1})
+            except Exception,e:
+                return JsonResponse({"status": "error"})
 
 
 @csrf_exempt
