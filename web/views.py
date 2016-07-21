@@ -64,7 +64,7 @@ def scan(request):
         elif mode == 2:
             try:
                 targets = ','.join(targets)
-                ports = request.POST['ports']
+                ports = request.POST['port']
                 options = request.POST['option']
                 port.delay(targets, ports, options)
                 return JsonResponse({"status": 1})

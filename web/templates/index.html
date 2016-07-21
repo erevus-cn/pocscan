@@ -132,7 +132,7 @@
                                 扫描端口
                             </th>
                             <td>
-                                <input type="text" class="form-control" value="" name="ports" id="scan_cookie">
+                                <input type="text" class="form-control" value="21,22,23,25,53,80,110,139,143,389,443,445,465,873,993,995,1080,1723,1433,1521,3306,3389,3690,5432,5800,5900,6379,7001,8000,8001,8080,8081,8888,9200,9300,9080,9999,11211,27017" name="ports" id="scan_port">
                       <span class="form-control-static">
 
                       </span>
@@ -144,8 +144,8 @@
                             </th>
                             <td>
                                 <input type="text" class="form-control"
-                                       value="Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.90 Safari/537.36"
-                                       name="option" id="scan_ua">
+                                       value="-sV --open --min-rate=1000"
+                                       name="option" id="scan_option">
                       <span class="form-control-static">
 
                       </span>
@@ -180,6 +180,8 @@
         var poc_name = document.getElementById('poc_name').value;
         var cookie = document.getElementById('scan_cookie').value;
         var ua = document.getElementById('scan_ua').value;
+        var scan_port = document.getElementById('scan_port').value;
+        var scan_option = document.getElementById('scan_option').value;
         if (mode == 0) {
             $.post('/scan/', {
                         'domains': scan_domain,
@@ -195,13 +197,25 @@
                             alert('目标都已有扫描结果或正在扫描');
                         }
                     });
-        } else {
+        } else if (mode == 1){
             $.post('/scan/', {
                         'domains': scan_domain,
                         'poc_name': poc_name,
                         'cookie': cookie,
                         'ua': ua,
                         'mode': mode,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    function (status) {
+                        if (status.status == 200) {
+                            alert('添加成功');
+                        }
+                    });
+        } else if (mode == 2){
+            $.post('/scan/', {
+                        'domains': scan_domain,
+                        'port': scan_port,
+                        'option': scan_option,
                         'csrfmiddlewaretoken': '{{ csrf_token }}'
                     },
                     function (status) {
