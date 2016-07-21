@@ -11,6 +11,9 @@ from web.tasks import crawler
 from chtscan.tasks import sql
 from pocscanui.settings import FLOWER_API
 from urlparse import urlparse
+from getinfo.models import *
+from getinfo.tasks import *
+
 import os
 
 import json
@@ -132,6 +135,123 @@ def save_result(request):
         return JsonResponse({"status": 200, "result": result})
     except Exception, e:
         return JsonResponse({"status": e})
+
+
+@login_required(login_url="/login/")
+def portlist(request):
+    return render(request, 'portlist.html')
+
+@login_required(login_url="/login/")
+def hostlist(request):
+    return render(request, 'hostlist.html')
+
+@login_required(login_url="/login/")
+def getport(request):
+    try:
+        offset = int(request.GET['offset'])
+        offend = int(request.GET['limit']) + offset
+        try:
+            scanip = request.GET['search']
+            infobj = portScan.objects.filter(ip=scanip).values()
+            info = list(infobj)
+            return JsonResponse({"total": len(info), "rows": info})
+        except Exception, e:
+            infobj = portScan.objects.values()
+            allinfo = list(infobj)
+            info = allinfo[offset:offend]
+            return JsonResponse({"total": len(allinfo), "rows": info})
+    except Exception, e:
+        print e
+        return JsonResponse({"total": "0", "rows": []})
+
+@login_required(login_url="/login/")
+def gethost(request):
+    try:
+        offset = int(request.GET['offset'])
+        offend = int(request.GET['limit']) + offset
+        try:
+            scanhost = request.GET['search']
+            infobj = hostScan.objects.filter(hostName=scanhost).values()
+            info = list(infobj)
+            return JsonResponse({"total": len(info), "rows": info})
+        except Exception, e:
+            infobj = hostScan.objects.values()
+            allinfo = list(infobj)
+            info = allinfo[offset:offend]
+            return JsonResponse({"total": len(allinfo), "rows": info})
+    except Exception, e:
+        print e
+        return JsonResponse({"total": "0", "rows": []})
+
+
+@login_required(login_url="/login/")
+def getinfo(request):
+    try:
+        checktypes = request.POST['type']
+        targets = request.POST['target']
+
+        if 'host' == checktypes:
+            targets = targets.split(',')
+            for target in targets:
+                host.delay(target)
+
+        if 'domain' == checktypes:
+            targets = targets.split(',')
+            for target in targets:
+                domain.delay(target)
+
+        if 'port' == checktypes:
+            ports = request.POST['port']
+            options = request.POST['option']
+            port.delay(targets, ports, options)
+        return HttpResponse("Success")
+    except Exception, e:
+        print e
+        return HttpResponse("Error")
+
+
+@login_required(login_url="/login/")
+def delport(request):
+    try:
+        ipids = request.POST['reqid']
+        ipids = ipids.split(',')
+        for ipid in ipids:
+            portScan.objects.get(id=ipid).delete()
+        return HttpResponse("Success")
+    except Exception, e:
+        return HttpResponse(e)
+
+@login_required(login_url="/login/")
+def delhost(request):
+    try:
+        ipids = request.POST['reqid']
+        ipids = ipids.split(',')
+        for ipid in ipids:
+            hostScan.objects.get(id=ipid).delete()
+        return HttpResponse("Success")
+    except Exception, e:
+        print e
+        return HttpResponse(e)
+
+@login_required(login_url="/login/")
+def filteport(request):
+    try:
+        filed = request.POST['field']
+        value = request.POST['value']
+        exec ("info = portScan.objects.filter(%s='%s').values()" % (filed, value))
+        info = list(info)
+        return JsonResponse({"total": len(info), "rows": info})
+    except Exception, e:
+        print e
+        return JsonResponse({"total": "0", "rows": []})
+
+
+
+
+
+@login_required(login_url="/login/")
+def portscan(request):
+    return render(request, 'index.html')
 
 
 @login_required(login_url="/login/")

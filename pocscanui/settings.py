@@ -86,6 +86,7 @@ INSTALLED_APPS = (
     'djcelery',
     'web',
     'chtscan',
+    'getinfo',
     )
 
 MIDDLEWARE_CLASSES = (

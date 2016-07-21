@@ -33,4 +33,12 @@ urlpatterns = [
     url(r'^delreq', 'web.views.del_req', ),
     url(r'^autocheck', 'web.views.sxcheck', ),
     url(r'^chromeapi', 'web.views.scancheck', ),
+    url(r'^portscan', 'web.views.portscan', ),
+    url(r'^getport', 'web.views.getport', ),
+    url(r'^portlist', 'web.views.portlist', name='portlist'),
+    url(r'^delport', 'web.views.delport', ),
+    url(r'^filteport', 'web.views.filteport', ),
+    url(r'^hostlist', 'web.views.hostlist', name='hostlist'),
+    url(r'^gethost', 'web.views.gethost', ),
+    url(r'^delhost', 'web.views.delhost', ),
 ]

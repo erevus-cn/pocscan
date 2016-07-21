@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html class=" ">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/static/css/vendor.css">
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-table.css">
+    <link rel="stylesheet" href="/static/css/corp.css">
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <title>
+        Pocscan
+    </title>
+</head>
+<body class="">
+{% include 'left.html' %}
+<main>
+    {% include 'banner.html' %}
+    <div class="container-fluid">
+        <h1 class="bread-crumb"><strong>扫描结果</strong>
+            <div class="absolute-right">
+            </div>
+        </h1>
+
+    <div id="toolbar">
+        <button id="remove" class="btn btn-danger" disabled>
+            <i class="glyphicon glyphicon-remove"></i> Delete
+        </button>
+        <button id="getitle" class="btn btn-success" disabled>
+            <i class="glyphicon glyphicon-check"></i> Get Title
+        </button>
+    </div>
+    <table id="table"
+           data-toolbar="#toolbar"
+           data-maintain-selected="true"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-minimum-count-columns="2"
+           data-pagination="true"
+           data-id-field="id"
+           data-page-list="[10, 25, 50, 100, ALL]"
+           data-page-size="20"
+           data-show-footer="false"
+           data-side-pagination="server"
+           data-url="/getport"
+           data-response-handler="responseHandler">
+    </table>
+
+
+<script>
+
+    var $table = $('#table'),
+    $remove = $('#remove'),
+    $getitle = $('#getitle'),
+    selections = [];
+
+    function initTable() {
+        $table.bootstrapTable({
+            height: getHeight(),
+            columns: [
+                {
+                    checkbox: true,
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'ip',
+                    title: 'IP / HOST',
+                    align: 'center',
+                    valign: 'middle',
+                    events: tosearch,
+                    formatter: tosearchSelect,
+                }, {
+                    field: 'portNumber',
+                    title: 'PORT',
+                    align: 'center',
+                    valign: 'middle',
+                    events: tosearch,
+                    formatter: tosearchSelect,
+                }, {
+                    field: 'server',
+                    title: 'SERVER',
+                    align: 'center',
+                    valign: 'middle',
+                    events: tosearch,
+                    formatter: tosearchSelect,
+                }, {
+                    field: 'product',
+                    title: 'PRODUCT',
+                    align: 'center',
+                    valign: 'middle',
+                    events: tosearch,
+                    formatter: tosearchSelect,
+                }, {
+                    field: 'version',
+                    title: 'VERSION',
+                    align: 'center',
+                    valign: 'middle',
+                }
+            ]
+        });
+
+        setTimeout(function () {
+            $table.bootstrapTable('resetView');
+        }, 200);
+        $table.on('check.bs.table uncheck.bs.table ' +
+                'check-all.bs.table uncheck-all.bs.table', function () {
+            $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
+            $getitle.prop('disabled', !$table.bootstrapTable('getSelections').length);
+
+            selections = getIdSelections();
+        });
+        $remove.click(function () {
+            var ids = getIdSelections();
+            $table.bootstrapTable('remove', {
+                field: 'id',
+                values: ids
+            });
+            $.post("/delport",{'csrfmiddlewaretoken': '{{ csrf_token }}', "reqid":ids.join()});
+            $remove.prop('disabled', true);
+        });
+        $getitle.click(function () {
+            var ids = getIpPortSelections();
+            post_data = {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                "type": "host",
+                "target": ids.join(),
+            }
+            $.post("/getinfo", post_data);
+        });
+        getIpPortSelections();
+        $(window).resize(function () {
+            $table.bootstrapTable('resetView', {
+                height: getHeight()
+            });
+        });
+    }
+
+    function valuegetkey(value, jsobj){
+        for(var item in jsobj){
+            if(jsobj[item] == value){
+                return item;
+            }
+        }
+    }
+
+    window.tosearch = {
+       'click .search': function (e, value, row, index) {
+           field = valuegetkey(value, row);
+           $.post('/filteport', {'csrfmiddlewaretoken': '{{ csrf_token }}', "field": field, "value": value},
+                   function(data){
+                       $('#table').bootstrapTable('load', data);
+                   }
+           );
+
+        },
+    }
+
+    function getIdSelections() {
+        return $.map($table.bootstrapTable('getSelections'), function (row) {
+            return row.id
+        });
+    }
+
+    function getIpPortSelections() {
+        return $.map($table.bootstrapTable('getSelections'), function (row) {
+            if (row.portNumber == 443) {
+                return "https://" + row.ip + ":" + row.portNumber;
+            } else {
+                return "http://" + row.ip + ":" + row.portNumber;
+            }
+
+        });
+    }
+
+    function responseHandler(res) {
+        $.each(res.rows, function (i, row) {
+            row.state = $.inArray(row.id, selections) !== -1;
+        });
+        return res;
+    }
+    function tosearchSelect(value, row, index){
+        var str = "<a class='search' href='javascript:void(0)'>" + value + "</a>";
+        return str;
+    }
+
+    function getHeight() {
+        return $(window).height() - $('h1').outerHeight(true);
+    }
+
+    $(function () {
+        var scripts = [
+                    location.search.substring(1) || '/static/js/bootstrap-table.js',
+                    '/static/js/bootstrap-table-export.js',
+                    '/static/js/tableExport.js',
+                    '/static/js/bootstrap-table-editable.js',
+                    '/static/js/bootstrap-editable.js'
+                ],
+                eachSeries = function (arr, iterator, callback) {
+                    callback = callback || function () {
+                            };
+                    if (!arr.length) {
+                        return callback();
+                    }
+                    var completed = 0;
+                    var iterate = function () {
+                        iterator(arr[completed], function (err) {
+                            if (err) {
+                                callback(err);
+                                callback = function () {
+                                };
+                            }
+                            else {
+                                completed += 1;
+                                if (completed >= arr.length) {
+                                    callback(null);
+                                }
+                                else {
+                                    iterate();
+                                }
+                            }
+                        });
+                    };
+                    iterate();
+                };
+
+        eachSeries(scripts, getScript, initTable);
+    });
+
+    function getScript(url, callback) {
+        var head = document.getElementsByTagName('head')[0];
+        var script = document.createElement('script');
+        script.src = url;
+
+        var done = false;
+        script.onload = script.onreadystatechange = function () {
+            if (!done && (!this.readyState ||
+                    this.readyState == 'loaded' || this.readyState == 'complete')) {
+                done = true;
+                if (callback)
+                    callback();
+                script.onload = script.onreadystatechange = null;
+            }
+        };
+        head.appendChild(script);
+        return undefined;
+    }
+</script>
+
+</body>
+</html>
