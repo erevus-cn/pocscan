@@ -41,4 +41,5 @@ urlpatterns = [
     url(r'^hostlist', 'web.views.hostlist', name='hostlist'),
     url(r'^gethost', 'web.views.gethost', ),
     url(r'^delhost', 'web.views.delhost', ),
+    url(r'^getinfo', 'web.views.getinfo', ),
 ]
