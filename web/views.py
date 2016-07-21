@@ -67,9 +67,9 @@ def scan(request):
                 ports = request.POST['port']
                 options = request.POST['option']
                 port.delay(targets, ports, options)
-                return JsonResponse({"status": 1})
+                return JsonResponse({"status": 200})
             except Exception,e:
-                return JsonResponse({"status": "error"})
+                return JsonResponse({"status": 1})
 
 
 @csrf_exempt
@@ -204,15 +204,6 @@ def getinfo(request):
             for target in targets:
                 host.delay(target)
 
-        if 'domain' == checktypes:
-            targets = targets.split(',')
-            for target in targets:
-                domain.delay(target)
-
-        if 'port' == checktypes:
-            ports = request.POST['port']
-            options = request.POST['option']
-            port.delay(targets, ports, options)
         return HttpResponse("Success")
     except Exception, e:
         print e
