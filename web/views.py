@@ -4,6 +4,8 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from pocscan.library.utils import get_poc_files
+from pocscan.config import PLUGINS_SUPPORT
+from pocscan.config import POCS_DIR
 from web.lib.utils import check_status
 from web.lib.task_control import Task_control
 from web.models import Result, Req_list
@@ -170,7 +172,29 @@ def results(request):
 @login_required(login_url="/login/")
 def poc_list(request):
     poc_list = get_poc_files('')
-    return render(request, 'poc_list.html', {"poc_list": poc_list})
+
+    if request.method == 'GET':
+        return render(request, 'poc_list.html', {"poc_list": poc_list, 'poc_supports': PLUGINS_SUPPORT})
+    else:
+        file_list = request.FILES.getlist('pocs[]')
+        upload_dir = POCS_DIR + request.POST['catalogue'] + '/'
+        try:
+            for poc in file_list:
+                ext = poc.name.split('.')[-1]
+                if ext != u'py':
+                    continue
+                filename = upload_dir + poc.name
+                with open(filename, 'wb') as tmp:
+                    for chunk in poc.chunks():
+                        tmp.write(chunk)
+        except BaseException as error:
+            return HttpResponse(error)
+        ret_dict = {
+            'poc_list': poc_list,
+            'status': u"上传成功",
+            'poc_supports': PLUGINS_SUPPORT
+        }
+        return render(request, 'poc_list.html', ret_dict)
 
 
 @login_required(login_url="/login/")

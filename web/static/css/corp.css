@@ -232,6 +232,10 @@ a.btn-default {
   background-color: #404052;
   border-color: #404052;
 }
+.btn-primary {
+    color: #fff;
+    background-color: #428bca;
+}
 .btn-success {
   border-color: #2bab69;
   background-color: #2bab69;
