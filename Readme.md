@@ -43,6 +43,10 @@ Pocscan支持被动式扫描,还提供了chrome浏览器插件,插件会自动�
 	
 		http://192.168.1.2:8090/chromeapi/     #注意chromeapi后面要用"/",注意chromeapi后面要用"/",注意chromeapi后面要用"/"。重要的事情说三次
 
+### Deploy to EdgeOne 
+
+[![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?repository-url=https://github.com/erevus-cn/pocscanhttps%3A%2F%2Fgithub.com%2Ferevus-cn%2Fpocscan)
+
 ### How to update
 
         $ sudo docker pull daocloud.io/aber/pocscan:latest
